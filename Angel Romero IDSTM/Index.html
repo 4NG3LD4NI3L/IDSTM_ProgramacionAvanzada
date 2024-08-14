@@ -6,7 +6,7 @@
     <title></title>
     <style>
         canvas{
-            background-color: black;
+            background-color: grey;
         }
 
     </style>
@@ -18,6 +18,8 @@
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
 
+        ctx.strokeRect(20,20,100,100)
+
         ctx.fillStyle = "#00FFF0"
         ctx.fillRect(100,100,100,100)
 
@@ -26,6 +28,27 @@
 
         ctx.fillStyle = "rgb(242, 41, 255,0.5)"
         ctx.fillRect(260,260,100,100)
+
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.strokeRect(340,340,100,100)
+
+
+
+        ctx.beginPath()
+        ctx.moveTo(400,100);
+        ctx.lineTo(400,200);
+        ctx.closePath();
+        ctx.stroke();
+
+
+        ctx.beginPath()
+        ctx.moveTo(150,210)
+        ctx.lineTo(20,400)
+        ctx.lineTo(200,450)
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
     </script>
 </body>
 </html>
