@@ -83,6 +83,13 @@
         ctx.fillStyle  = grdRad;
         ctx.fillRect(500,340,200,150)
 
+        var img = new Image();
+        img.src = 'sebas.jpeg'
+
+        img.onload = function(){
+            ctx.drawImage(img,700,100,200,200);
+        };
+
     </script>
 </body>
 </html>
