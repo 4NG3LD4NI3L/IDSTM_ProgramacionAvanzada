@@ -65,7 +65,16 @@
         ctx.fillText("Hola mundo",400,50)
         ctx.strokeText("Hola mundo",410,60)
 
+        var grd = ctx.createLinearGradient(0,0,500,500)
+        grd.addColorStop(0,"#00b5fe");
+        grd.addColorStop(0,"#00b5fe");
+        grd.addColorStop(1,"#40fe00");
+    
+       
 
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(420,120,250,200)
 
     </script>
 </body>
