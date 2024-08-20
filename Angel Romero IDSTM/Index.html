@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <canvas id = "my_canvas" width="500" height="500"></canvas>
+    <canvas id = "my_canvas" width="1000" height="500"></canvas>
 
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
@@ -59,6 +59,12 @@
         ctx.arc(300,110,30,0, 1 * Math.PI)
         ctx.strokeStyle = "Black"
         ctx.stroke();
+
+        ctx.font = "50px georgia"
+        ctx.fillStyle ="#11fe00"
+        ctx.fillText("Hola mundo",400,50)
+        ctx.strokeText("Hola mundo",410,60)
+
 
 
     </script>
