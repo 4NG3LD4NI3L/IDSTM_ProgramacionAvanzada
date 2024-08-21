@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        canvas{
+            background-color: grey;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id = "my_canvas" width="1000" height="500"></canvas>
+
+    <script type = "text/javascript">
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+        var figura = 1;
+
+        my_canvas.addEventListener("click",function(e){
+            
+            if(figura == 1){
+                ctx.beginPath();
+                ctx.arc(e.x,e.y,50,0,2 * Math.PI)
+                ctx.stroke();
+                ctx.fill();
+            }
+            else{ 
+                ctx.fillRect(e.x,e.y,100,100)
+                ctx.strokeRect(e.x,e.y,100,100)
+            }
+        })
+
+        my_canvas.addEventListener("mouseover",function(e){
+            ctx.fillStyle = getRandomColor();
+        })
+
+        my_canvas.addEventListener("mouseout",function(e){
+            if(figura == 1){  
+                figura = 2
+            }
+            else if(figura == 2){  
+                figura = 1
+            }
+
+        })
+        
+
+        function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+        }
+
+      /*ctx.strokeRect(20,20,100,100)
+
+        ctx.fillStyle = "#00FFF0"
+        ctx.fillRect(100,100,100,100)
+
+        ctx.fillStyle = "#3EFF00"
+        ctx.fillRect(180,180,100,100)
+
+        ctx.fillStyle = "rgb(242, 41, 255,0.5)"
+        ctx.fillRect(260,260,100,100)
+
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.strokeRect(340,340,100,100)
+
+
+
+        ctx.beginPath()
+        ctx.moveTo(400,100);
+        ctx.lineTo(400,200);
+        ctx.closePath();
+        ctx.stroke();
+
+
+        ctx.beginPath()
+        ctx.moveTo(150,210)
+        ctx.lineTo(20,400)
+        ctx.lineTo(200,450)
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(300,100,50,0,2 * Math.PI)
+        ctx.stroke();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(300,110,30,0, 1 * Math.PI)
+        ctx.strokeStyle = "Black"
+        ctx.stroke();
+
+        ctx.font = "50px georgia"
+        ctx.fillStyle ="#11fe00"
+        ctx.fillText("Hola mundo",400,50)
+        ctx.strokeText("Hola mundo",410,60)
+
+        var grd = ctx.createLinearGradient(0,0,500,500)
+        grd.addColorStop(0,"#00b5fe");
+        grd.addColorStop(0,"#00b5fe");
+        grd.addColorStop(1,"#40fe00");
+    
+        ctx.fillStyle = grd;
+        ctx.fillRect(420,120,250,200)
+
+        //createRadialGradient(x0, y0, r0, x1, y1, r1)
+
+        const grdRad = ctx.createRadialGradient(450, 400, 25, 250, 400,420);
+        grdRad.addColorStop(0,"#ff0000")
+        grdRad.addColorStop(0.9,"white")
+        grdRad.addColorStop(1,"#00dbff")
+
+        ctx.fillStyle  = grdRad;
+        ctx.fillRect(500,340,200,150)
+
+        var img = new Image();
+        img.src = 'sebas.jpeg'
+
+        img.onload = function(){
+            ctx.drawImage(img,700,100,200,200);
+        };*/
+
+    </script>
+</body>
+</html>
