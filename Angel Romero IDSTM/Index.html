@@ -18,7 +18,19 @@
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
 
-        ctx.strokeRect(20,20,100,100)
+        my_canvas.addEventListener("click",function(e){
+            
+            console.log(e.x) ;
+            console.log(e.y);
+
+            ctx.beginPath();
+            ctx.arc(e.x,e.y,50,0,2 * Math.PI)
+            ctx.stroke();
+            ctx.fill();
+        })
+
+
+      /*ctx.strokeRect(20,20,100,100)
 
         ctx.fillStyle = "#00FFF0"
         ctx.fillRect(100,100,100,100)
@@ -88,7 +100,7 @@
 
         img.onload = function(){
             ctx.drawImage(img,700,100,200,200);
-        };
+        };*/
 
     </script>
 </body>
