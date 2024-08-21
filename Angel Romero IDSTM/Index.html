@@ -20,15 +20,25 @@
 
         my_canvas.addEventListener("click",function(e){
             
-            console.log(e.x) ;
-            console.log(e.y);
-
+            
             ctx.beginPath();
             ctx.arc(e.x,e.y,50,0,2 * Math.PI)
             ctx.stroke();
             ctx.fill();
         })
 
+        my_canvas.addEventListener("mouseover",function(e){
+            ctx.fillStyle = getRandomColor();
+        })
+        
+        function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+        }
 
       /*ctx.strokeRect(20,20,100,100)
 
