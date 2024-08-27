@@ -18,6 +18,7 @@
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
         var figura = 1;
+        var dibujo = false;
 
         my_canvas.addEventListener("click",function(e){
             ctx.fillStyle = getRandomColor();
@@ -28,8 +29,8 @@
                 ctx.fill();
             }
             else{ 
-                ctx.fillRect(e.x,e.y,100,100)
-                ctx.strokeRect(e.x,e.y,100,100)
+                ctx.fillRect(e.x - 50,e.y - 50,100,100)
+                ctx.strokeRect(e.x - 50,e.y -50,100,100)
             }
         })
 
@@ -48,11 +49,21 @@
         })
         
         my_canvas.addEventListener("mousemove",function(e){
-            ctx.fillStyle = "black"
-            ctx.beginPath();
-            ctx.arc(e.x,e.y,5,0,2 * Math.PI)
-            ctx.stroke();
-            ctx.fill();
+            if(dibujo == true){
+                ctx.fillStyle = "black"
+                ctx.beginPath();
+                ctx.arc(e.x,e.y,2,0,2 * Math.PI)
+                ctx.stroke();
+                ctx.fill();
+            }
+        })
+
+        my_canvas.addEventListener("mouseup",function(e){
+            dibujo = false;
+        })
+
+        my_canvas.addEventListener("mousedown",function(e){
+            dibujo = true;
         })
 
         function getRandomColor() {
