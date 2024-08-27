@@ -19,6 +19,7 @@
         const ctx = my_canvas.getContext('2d')
         var figura = 1;
         var dibujo = false;
+        var x = 300,y = 300;
 
         function getRandomColor() {
         var letters = '0123456789ABCDEF';
@@ -32,17 +33,25 @@
         document.addEventListener("keydown",function(e){
             console.log(e)
 
-            let x = Math.random() * 600;
-            let y = Math.random() * 600;
-
+            switch(e.keyCode)
+            {
+                case 65:
+                    x -= 10;
+                break;
+                case 68:
+                    x += 10;
+                break;
+                case 83:
+                    y += 10
+                    break;
+                case 87:
+                    y -= 10;
+                    break;
+            }
             ctx.fillStyle = getRandomColor();
 
             ctx.fillRect(x ,y,50,50)
             ctx.strokeRect(x,y,50,50)
-
-            ctx.fillStyle = "black";
-            ctx.font = "50px georgia"
-            ctx.fillText(e.key,x+15,y+30)
         })
 
         document.addEventListener("keyup",function(e){
