@@ -52,16 +52,28 @@
         function update(){
             switch(direccion){
                 case "up":
-                    y -= 10;
+                    y -= 10
+                    if(y == 0){
+                        y = 600
+                    }
                 break;
                 case "down":
                     y += 10
+                    if(y == 600){
+                        y = 0
+                    }
                 break;
                 case "left":
                     x -= 10
+                    if(x == 0){
+                        x = 600
+                    }
                 break;
                 case "rigth":
                     x += 10
+                    if(x == 600){
+                        x = 0
+                    }
                 break;
             }
         }
