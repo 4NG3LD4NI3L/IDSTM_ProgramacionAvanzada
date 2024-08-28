@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <canvas id = "my_canvas" width="1000" height="500"></canvas>
+    <canvas id = "my_canvas" width="600" height="600"></canvas>
 
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
@@ -20,6 +20,7 @@
         var figura = 1;
         var dibujo = false;
         var x = 300,y = 300;
+        var direccion = "";
 
         function getRandomColor() {
         var letters = '0123456789ABCDEF';
@@ -31,29 +32,50 @@
         }
 
         document.addEventListener("keydown",function(e){
-            ctx.fillStyle = "grey";
-            ctx.fillRect(0 ,0,1000,500)
-
             switch(e.keyCode)
             {
                 case 65:
-                    x -= 10;
+                    direccion = "left";
                 break;
                 case 68:
-                    x += 10;
+                    direccion = "rigth"
                 break;
                 case 83:
-                    y += 10
+                    direccion = "down"
                     break;
                 case 87:
-                    y -= 10;
+                    direccion = "up";
                     break;
             }
-            ctx.fillStyle = getRandomColor();
-
-            ctx.fillRect(x ,y,50,50)
-            ctx.strokeRect(x,y,50,50)
         })
+
+        function update(){
+            switch(direccion){
+                case "up":
+                    y -= 10;
+                break;
+                case "down":
+                    y += 10
+                break;
+                case "left":
+                    x -= 10
+                break;
+                case "rigth":
+                    x += 10
+                break;
+            }
+        }
+
+        function pintar(){
+            ctx.fillStyle = "grey";
+            ctx.fillRect(0,0,600,600)
+            ctx.fillStyle =getRandomColor()
+            ctx.fillRect(x,y,50,50)
+
+            update();
+            requestAnimationFrame(pintar)
+        }
+        requestAnimationFrame(pintar)
 
         document.addEventListener("keyup",function(e){
             //console.log(e)
