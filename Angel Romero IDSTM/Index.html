@@ -5,25 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
+        body{
+            background-color: beige;
+            display: flex;
+            justify-content: center;
+           
+        }
         canvas{
-            background-color: grey;
+            background-color: rgb(32, 32, 32);
+            border: 1px solid rgb(0, 0, 0);
         }
 
     </style>
+
 </head>
 <body>
-    <canvas id = "my_canvas" width="600" height="600"></canvas>
+    <canvas id = "my_canvas" width="800" height="800"></canvas>
 
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
-        var figura = 1;
-        var dibujo = false;
-        var x = 300,y = 300;
-        var direccion = "";
-        var velocidad = 5;
 
-        function getRandomColor() {
+        //CUERPO
+        ctx.fillStyle = "black"
+        ctx.fillRect(300,180,150,150)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(300,180,150,150)
+
+        //Brazo izquierdo
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(170,210,130,30)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(170,210,130,30)
+
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(170,160,30,50)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(170,160,30,50)
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.arc(185,155,25,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.arc(250,220,30,3.13,0 * Math.PI)
+        ctx.fill();
+
+        //Brazo derecho
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(450,210,130,30)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(450,210,130,30)
+
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(550,160,30,50)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(550,160,30,50)
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.arc(565,155,25,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.arc(500,220,30,3.13,0 * Math.PI)
+        ctx.fill();
+
+        //Cabeza
+
+        ctx.beginPath();
+        ctx.fillStyle = "black "
+        ctx.arc(370,120,55,0,10 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.arc(370,130,50,0,10 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "black "
+        ctx.arc(345,125,14,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "black "
+        ctx.arc(395,125,14,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "black "
+        ctx.arc(370,145,25,0,1 * Math.PI)
+        ctx.stroke();
+
+        //pierna izquierda
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(310,330,40,170)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(310,330,40,170)
+
+        ctx.fillStyle = "white"
+        ctx.fillRect(290,500,60,25)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(290,500,60,25)
+
+        ctx.fillStyle = "black "
+        ctx.fillRect(310,330,40,110)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(310,330,40,170)
+
+        //Pierna derecha
+        ctx.fillStyle = "#FFDFB8 "
+        ctx.fillRect(403,330,40,170)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(403,330,40,170)
+
+        ctx.fillStyle = "white"
+        ctx.fillRect(403,500,60,25)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(403,500,60,25)
+
+        ctx.fillStyle = "black "
+        ctx.fillRect(403,330,40,110)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(403,330,40,170)
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(300,330,150,40)
+        ctx.strokeStyle = "white"
+        ctx.strokeRect(300,330,150,40)
+
+        ctx.fillStyle = "white"
+        ctx.font = "25px georgia"
+        ctx.fillText("De puro leer" , 300, 230)
+        ctx.fillText("la biblia" , 350, 270)
+        
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*function getRandomColor() {
         var letters = '0123456789ABCDEF';
         var color = '#';
         for (var i = 0; i < 6; i++) {
@@ -31,6 +183,12 @@
         }
         return color;
         }
+        var figura = 1;
+        var dibujo = false;
+        var x = 300,y = 300;
+        var direccion = "";
+        var velocidad = 5;
+
 
         document.addEventListener("keydown",function(e){
             switch(e.keyCode)
@@ -151,10 +309,10 @@
         my_canvas.addEventListener("mousedown",function(e){
             dibujo = true;
         })
-        \*
+        
         
 
-      /*ctx.strokeRect(20,20,100,100)
+        ctx.strokeRect(20,20,100,100)
 
         ctx.fillStyle = "#00FFF0"
         ctx.fillRect(100,100,100,100)
