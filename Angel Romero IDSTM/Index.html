@@ -20,12 +20,143 @@
 
 </head>
 <body>
-    <canvas id = "my_canvas" width="800" height="500"></canvas>
+    <canvas id = "my_canvas" width="500" height="500"></canvas>
     
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
         
+
+        function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+        }
+        var figura = 1;
+        var dibujo = false;
+        var x = 300,y = 300;
+        var direccion = "";
+        var velocidad = 5;
+
+        class rectangulo{
+            constructor(x,y,h,w,c,s){
+                this.x = x;
+                this.y = y;
+                this.h = h;
+                this.w = w;
+                this.c = c
+                this.s = s
+            }
+
+            tocar(otro){
+                if(this.x < otro.x + otro.w &&
+                   this.x + this.w > otro.x   &&    
+                   this.y < otro.y + otro.h &&    
+                   this.y + this.h > otro.y)
+                {
+                    otro.x = Math.random() * 500
+                    otro.y = Math.random() * 500
+                }
+                return true;
+            }
+            
+        }
+
+        let player = new rectangulo(300,300,50,50,getRandomColor(),velocidad)
+        let rat = new rectangulo(100,100,30,30,getRandomColor(),0)
+
+
+        document.addEventListener("keydown",function(e){
+            switch(e.keyCode)
+            {
+                case 65:
+                    direccion = "left";
+                break;
+                case 68:
+                    direccion = "rigth"
+                break;
+                case 83:
+                    direccion = "down"
+                    break;
+                case 87:
+                    direccion = "up";
+                    break;
+                case 32:
+                    velocidad += 2
+                    break;
+            }
+        })
+
+        function update(){
+            switch(direccion){
+                case "up":
+                    player.y -= velocidad
+                    if(player.y <= 0){
+                        player.y = 600
+                    }
+                break;
+                case "down":
+                    player.y += velocidad
+                    if(player.y >= 600){
+                        player.y = 0
+                    }
+                break;
+                case "left":
+                player.x -= velocidad
+                    if(player.x <= 0){
+                        player.x = 600
+                    }
+                break;
+                case "rigth":
+                    player.x += velocidad
+                    if(player.x >= 600){
+                        player.x = 0
+                    }
+                break;
+
+                
+            }
+        }
+
+
+
+        function pintar(){
+            
+            ctx.fillStyle = "grey";
+            ctx.fillRect(0,0,600,600)
+
+            player.tocar(rat);
+
+            ctx.fillStyle = player.c
+            ctx.fillRect(player.x,player.y,player.w,player.h)
+            ctx.strokeRect(player.x,player.y,player.w,player.h)
+
+
+            ctx.fillStyle = rat.c
+            ctx.fillRect(rat.x,rat.y,rat.w,rat.h)
+            ctx.strokeRect(rat.x,rat.y,rat.w,rat.h)
+
+            update();
+            requestAnimationFrame(pintar)
+            ctx.fillStyle = "black";
+            ctx.font = "25px georgia"
+            ctx.fillText("SPEED: " + velocidad, 20,20)
+        }
+        requestAnimationFrame(pintar)
+
+        document.addEventListener("keyup",function(e){
+            //console.log(e)
+        })
+
+        document.addEventListener("keypress",function(e){
+           // console.log(e)
+        })
+
+        
+        /*palmera
         function drawPalmLeaf(ctx, x, y, length, width, numFolioles) {
             ctx.strokeStyle = "green"; // Color de la hoja
             ctx.lineWidth = 2;
@@ -150,6 +281,8 @@
         ctx.fillStyle = "#406040"
         ctx.arc(705,240,20,0,2 * Math.PI)
         ctx.fill();
+
+        *\
 
 
         /*22 - ATARDECER
@@ -531,112 +664,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-        }
-        var figura = 1;
-        var dibujo = false;
-        var x = 300,y = 300;
-        var direccion = "";
-        var velocidad = 5;
-
-
-        document.addEventListener("keydown",function(e){
-            switch(e.keyCode)
-            {
-                case 65:
-                    direccion = "left";
-                break;
-                case 68:
-                    direccion = "rigth"
-                break;
-                case 83:
-                    direccion = "down"
-                    break;
-                case 87:
-                    direccion = "up";
-                    break;
-                case 32:
-                    velocidad += 2
-                    break;
-            }
-        })
-
-        function update(){
-            switch(direccion){
-                case "up":
-                    y -= velocidad
-                    if(y <= 0){
-                        y = 600
-                    }
-                break;
-                case "down":
-                    y += velocidad
-                    if(y >= 600){
-                        y = 0
-                    }
-                break;
-                case "left":
-                    x -= velocidad
-                    if(x <= 0){
-                        x = 600
-                    }
-                break;
-                case "rigth":
-                    x += velocidad
-                    if(x >= 600){
-                        x = 0
-                    }
-                break;
-            }
-        }
-
-        function pintar(){
-            
-            ctx.fillStyle = "grey";
-            ctx.fillRect(0,0,600,600)
-            ctx.fillStyle =getRandomColor()
-            ctx.fillRect(x,y,50,50)
-
-            update();
-            requestAnimationFrame(pintar)
-            ctx.fillStyle = "black";
-            ctx.font = "25px georgia"
-            ctx.fillText("SPEED: " + velocidad, 20,20)
-        }
-        requestAnimationFrame(pintar)
-
-        document.addEventListener("keyup",function(e){
-            //console.log(e)
-        })
-
-        document.addEventListener("keypress",function(e){
-           // console.log(e)
-        })
 
 
         /*my_canvas.addEventListener("click",function(e){
