@@ -15,16 +15,80 @@
             background-color: #B3EEFE;
             border: 1px solid rgb(0, 0, 0);
         }
-
-    </style>
+        
+        </style>
 
 </head>
 <body>
-    <canvas id = "my_canvas" width="1200" height="500"></canvas>
-
+    <canvas id = "my_canvas" width="800" height="500"></canvas>
+    
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
+        
+        
+        let sunsetGradient = ctx.createLinearGradient(0, 0, 0, 400);
+        
+        sunsetGradient.addColorStop(0, "#FF4500");   
+        sunsetGradient.addColorStop(0.3, "#FF6347"); 
+        sunsetGradient.addColorStop(0.6, "#FFD700"); 
+        sunsetGradient.addColorStop(0.8, "#DA70D6"); 
+        sunsetGradient.addColorStop(1, "#483D8B");   
+        
+        ctx.fillStyle = sunsetGradient;
+        ctx.fillRect(0, 0, 800, 400); 
+
+        ctx.beginPath();
+        ctx.fillStyle = "#009712"
+        ctx.arc(200,700,400,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#009712"
+        ctx.arc(600,700,400,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#6600FC";
+        ctx.fillRect(150,250,60,60)
+        ctx.strokeStyle = "black"
+        ctx.lineWidth = 2
+        ctx.strokeRect(150,250,60,60)
+
+        ctx.fillStyle = "black";
+        ctx.fillRect(155,280,20,30)
+        ctx.strokeStyle = "black"
+        ctx.lineWidth = 2
+        ctx.strokeRect(180,270,20,20)
+
+
+
+        ctx.beginPath();
+        // Mueve la pluma a la primera esquina del triángulo
+        ctx.moveTo(179, 190); // Primer punto (x1, y1)
+        // Dibuja una línea hasta la segunda esquina
+        ctx.lineTo(210, 250); // Segundo punto (x2, y2)
+        // Dibuja una línea hasta la tercera esquina
+        ctx.lineTo(150, 250); // Tercer punto (x3, y3)
+        // Cierra el camino de dibujo para conectar la tercera esquina con la primera
+        ctx.closePath();
+        ctx.fillStyle = "#FF5733"; 
+        ctx.fill();
+        ctx.strokeStyle = "black"; 
+        ctx.lineWidth = 2; 
+        ctx.stroke();
+
+
+
+
+
+
+
+
+
+
+        /*DIBUJO ACT 23
 
         function drawRoundedRect(ctx, x, y, width, height, radius) {
             ctx.beginPath();
@@ -194,7 +258,7 @@
         ctx.fillStyle = "#20E04C"
         ctx.arc(70,410,20,0,2 * Math.PI)
         ctx.fill();
-      
+      /*
 
 
 
