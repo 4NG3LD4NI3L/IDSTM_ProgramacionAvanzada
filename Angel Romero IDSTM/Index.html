@@ -12,7 +12,7 @@
            
         }
         canvas{
-            background-color: #B3EEFE;
+            background-color: #2000A0;
             border: 1px solid rgb(0, 0, 0);
         }
         
@@ -26,7 +26,133 @@
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
         
+        function drawPalmLeaf(ctx, x, y, length, width, numFolioles) {
+            ctx.strokeStyle = "green"; // Color de la hoja
+            ctx.lineWidth = 2;
+
+            // Dibuja el tallo central
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y - length);
+            ctx.stroke();
+
+            // Dibuja los foliolos
+            for (let i = 0; i < numFolioles; i++) {
+                let angle = (Math.PI / 4) * (i / numFolioles - 0.5); // Angulo de cada foliolo
+                let offsetX = Math.sin(angle) * width;
+                let offsetY = Math.cos(angle) * length;
+
+                // Foliolo izquierdo
+                ctx.beginPath();
+                ctx.moveTo(x, y - (i * length / numFolioles));
+                ctx.lineTo(x - offsetX, y - (i * length / numFolioles) - offsetY);
+                ctx.stroke();
+
+                // Foliolo derecho
+                ctx.beginPath();
+                ctx.moveTo(x, y - (i * length / numFolioles));
+                ctx.lineTo(x + offsetX, y - (i * length / numFolioles) - offsetY);
+                ctx.stroke();
+            }
+        }
+
+
+        ctx.fillStyle = "#C06000";
+        ctx.fillRect(0,350,800,150)
+
+        ctx.fillStyle = "#006000";
+        ctx.fillRect(0,330,800,20)
         
+        ctx.fillStyle = "#40A000";
+        ctx.fillRect(0,310,800,20)
+
+        ctx.fillStyle = "#80E000";
+        ctx.fillRect(0,290,800,20)
+
+        ctx.fillStyle = "#804000";
+        ctx.fillRect(500,140,20,150)
+
+        ctx.save();
+        ctx.translate(650, 0)
+        ctx.rotate(45 * Math.PI / 180);
+        drawPalmLeaf(ctx, 3, 220, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(640, 0)
+        ctx.rotate(45 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 220, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(640, 150)
+        ctx.rotate(90 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 150, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(450, 200)
+        ctx.rotate(240 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 150, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(400, 100)
+        ctx.rotate(300 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 150, 100, 100, 20);
+        ctx.restore();
+
+        ctx.fillStyle = "#804000";
+        ctx.fillRect(0,140,20,150)
+
+        ctx.save();
+        ctx.translate(140, 0)
+        ctx.rotate(45 * Math.PI / 180);
+        drawPalmLeaf(ctx, 3, 220, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(130, 0)
+        ctx.rotate(45 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 220, 100, 100, 20);
+        ctx.restore();
+
+        ctx.save();
+        ctx.translate(120, 150)
+        ctx.rotate(90 * Math.PI / 180);
+        drawPalmLeaf(ctx, 2, 150, 100, 100, 20);
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#F6F506"
+        ctx.arc(130,250,20,0,2 * Math.PI)
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#F6F506"
+        ctx.arc(240,250,20,0,2 * Math.PI)
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#F6F506"
+        ctx.arc(350,250,20,0,2 * Math.PI)
+        ctx.stroke();
+
+        ctx.fillStyle = "#40A000";
+        ctx.fillRect(700,240,10,50)
+
+        ctx.beginPath();
+        ctx.fillStyle = "#E0E000"
+        ctx.arc(705,240,30,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#406040"
+        ctx.arc(705,240,20,0,2 * Math.PI)
+        ctx.fill();
+
+
+        /*22 - ATARDECER
         let sunsetGradient = ctx.createLinearGradient(0, 0, 0, 400);
         
         sunsetGradient.addColorStop(0, "#FF4500");   
@@ -79,6 +205,7 @@
         ctx.lineWidth = 2; 
         ctx.stroke();
 
+        */
 
 
 
