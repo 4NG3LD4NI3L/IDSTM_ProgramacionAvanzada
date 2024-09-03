@@ -62,11 +62,37 @@
                 }
                 return true;
             }
+
+            siTocar(otro){
+                if(this.x < otro.x + otro.w &&
+                   this.x + this.w > otro.x   &&    
+                   this.y < otro.y + otro.h &&    
+                   this.y + this.h > otro.y)
+                {
+                        switch(direccion){
+                    case "up":
+                        player.y += velocidad
+                    break;
+                    case "down":
+                        player.y -= velocidad
+                    break;
+                    case "left":
+                    player.x += velocidad
+                    break;
+                    case "rigth":
+                        player.x -= velocidad
+                    break;
+            }
+                    
+                }
+                return true;
+            }
             
         }
 
-        let player = new rectangulo(300,300,50,50,getRandomColor(),velocidad)
+        let player = new rectangulo(300,320,50,50,getRandomColor(),3)
         let rat = new rectangulo(100,100,30,30,getRandomColor(),0)
+        let bloque = new rectangulo(100,300,20,300,getRandomColor(),0)
 
 
         document.addEventListener("keydown",function(e){
@@ -128,7 +154,9 @@
             ctx.fillStyle = "grey";
             ctx.fillRect(0,0,600,600)
 
+            update();
             player.tocar(rat);
+            player.siTocar(bloque);
 
             ctx.fillStyle = player.c
             ctx.fillRect(player.x,player.y,player.w,player.h)
@@ -139,7 +167,10 @@
             ctx.fillRect(rat.x,rat.y,rat.w,rat.h)
             ctx.strokeRect(rat.x,rat.y,rat.w,rat.h)
 
-            update();
+            ctx.fillStyle = bloque.c
+            ctx.fillRect(bloque.x,bloque.y,bloque.w,bloque.h)
+            ctx.strokeRect(bloque.x,bloque.y,bloque.w,bloque.h)
+
             requestAnimationFrame(pintar)
             ctx.fillStyle = "black";
             ctx.font = "25px georgia"
