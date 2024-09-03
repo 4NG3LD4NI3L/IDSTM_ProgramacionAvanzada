@@ -12,7 +12,7 @@
            
         }
         canvas{
-            background-color: rgb(32, 32, 32);
+            background-color: #B3EEFE;
             border: 1px solid rgb(0, 0, 0);
         }
 
@@ -20,11 +20,195 @@
 
 </head>
 <body>
-    <canvas id = "my_canvas" width="800" height="800"></canvas>
+    <canvas id = "my_canvas" width="1200" height="500"></canvas>
 
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
+
+        function drawRoundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.arcTo(x + width, y, x + width, y + radius, radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+            ctx.lineTo(x + radius, y + height);
+            ctx.arcTo(x, y + height, x, y + height - radius, radius);
+            ctx.lineTo(x, y + radius);
+            ctx.arcTo(x, y, x + radius, y, radius);
+            ctx.closePath();
+        }
+
+        //Cuadros pequeños
+        ctx.fillStyle = "#FF9061";
+        ctx.fillRect(120,40,70,70);
+        ctx.fillRect(190,40,70,70);
+        ctx.fillRect(50,190,70,70);
+        ctx.fillRect(1000,120,70,70);
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.strokeRect(120,40,70,70)
+        ctx.strokeRect(190,40,70,70)
+        ctx.strokeRect(50,190,70,70)
+        ctx.strokeRect(1000,120,70,70)
+
+        //piso 
+        ctx.fillStyle = "#FF9766";
+        ctx.fillRect(0,430,1200,70);
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.strokeRect(0,430,1200,70)
+
+        //cuadro grandes
+        ctx.fillStyle = "black";
+        drawRoundedRect(ctx, 360, 210, 150, 220, 10);
+        ctx.fill();
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#0096EF";
+        drawRoundedRect(ctx, 340, 180, 150, 250, 10);
+        ctx.fill();
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#71C2FF";
+        drawRoundedRect(ctx, 342, 182, 140, 240, 10);
+        ctx.fill();
+        
+
+        ctx.fillStyle = "black";
+        drawRoundedRect(ctx, 290, 310, 150, 120, 10);
+        ctx.fill();
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#EB9472";
+        drawRoundedRect(ctx, 270, 280, 150, 150, 10);
+        ctx.fill();
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#FFC0B5";
+        drawRoundedRect(ctx, 272, 282, 140, 140, 10);
+        ctx.fill();
+
+        ctx.fillStyle = "#00DD5B";
+        drawRoundedRect(ctx, 1000, 280, 400, 150, 10);
+        ctx.fill();
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(290,305,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(290,410,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(400,305,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(400,410,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(360,200,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(470,200,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(470,410,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(1020,300,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#B3BFC0"
+        ctx.arc(1020,410,10,0,2 * Math.PI)
+        ctx.fill();
+        ctx.stroke();
+
+        //Tubo
+        ctx.fillStyle = "#008800";
+        ctx.fillRect(680,280,100,150);
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.strokeRect(680,280,100,150)
+
+        ctx.fillStyle = "#008800";
+        ctx.fillRect(660,250,140,70);
+        ctx.srokeStyle = "black"
+        ctx.lineWidth = 3;
+        ctx.strokeRect(660,250,140,70)
+
+        ctx.fillStyle = "#01DC5D";
+        ctx.fillRect(680,252,10,67);
+
+        ctx.fillStyle = "#01DC5D";
+        ctx.fillRect(685,321,10,107);
+        
+
+        //arbusto
+        ctx.beginPath();
+        ctx.fillStyle = "#20E04C"
+        ctx.arc(60,390,20,0,2 * Math.PI)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = "#20E04C"
+        ctx.arc(50,410,20,0,2 * Math.PI)
+        ctx.fill();
+    
+        ctx.beginPath();
+        ctx.fillStyle = "#20E04C"
+        ctx.arc(70,410,20,0,2 * Math.PI)
+        ctx.fill();
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*AVATAR
 
         //CUERPO
         ctx.fillStyle = "black"
@@ -143,7 +327,7 @@
         ctx.fillText("De puro leer" , 300, 230)
         ctx.fillText("la biblia" , 350, 270)
         
-
+        */
 
 
 
