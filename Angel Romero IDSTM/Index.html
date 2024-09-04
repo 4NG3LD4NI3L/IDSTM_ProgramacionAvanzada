@@ -40,6 +40,9 @@
         var x = 300,y = 300;
         var direccion = "";
         var velocidad = 5;
+        
+        var paredes = [];
+        var puntos = 0;
 
         class rectangulo{
             constructor(x,y,h,w,c,s){
@@ -77,7 +80,7 @@
                         player.y -= velocidad
                     break;
                     case "left":
-                    player.x += velocidad
+                        player.x += velocidad
                     break;
                     case "rigth":
                         player.x -= velocidad
@@ -92,8 +95,9 @@
 
         let player = new rectangulo(300,320,50,50,getRandomColor(),3)
         let rat = new rectangulo(100,100,30,30,getRandomColor(),0)
-        let bloque = new rectangulo(100,300,20,300,getRandomColor(),0)
-
+        
+        paredes.push(new rectangulo(100,400,20,300,getRandomColor(),0))
+        paredes.push(new rectangulo(100,100,20,300,getRandomColor(),0))
 
         document.addEventListener("keydown",function(e){
             switch(e.keyCode)
@@ -111,7 +115,7 @@
                     direccion = "up";
                     break;
                 case 32:
-                    velocidad += 2
+                    velocidad += 0
                     break;
             }
         })
@@ -156,7 +160,6 @@
 
             update();
             player.tocar(rat);
-            player.siTocar(bloque);
 
             ctx.fillStyle = player.c
             ctx.fillRect(player.x,player.y,player.w,player.h)
@@ -167,9 +170,13 @@
             ctx.fillRect(rat.x,rat.y,rat.w,rat.h)
             ctx.strokeRect(rat.x,rat.y,rat.w,rat.h)
 
-            ctx.fillStyle = bloque.c
-            ctx.fillRect(bloque.x,bloque.y,bloque.w,bloque.h)
-            ctx.strokeRect(bloque.x,bloque.y,bloque.w,bloque.h)
+            
+
+            paredes.forEach(function(pared,i,array){
+                ctx.fillRect(pared.x,pared.y,pared.w,pared.h)
+                ctx.strokeRect(pared.x,pared.y,pared.w,pared.h)
+                player.siTocar(pared);
+            })
 
             requestAnimationFrame(pintar)
             ctx.fillStyle = "black";
