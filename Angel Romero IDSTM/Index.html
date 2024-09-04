@@ -43,6 +43,7 @@
         
         var paredes = [];
         var puntos = 0;
+        var pause = false
 
         class rectangulo{
             constructor(x,y,h,w,c,s){
@@ -62,6 +63,8 @@
                 {
                     otro.x = Math.random() * 500
                     otro.y = Math.random() * 500
+                    puntos += 10 
+
                 }
                 return true;
             }
@@ -115,51 +118,66 @@
                     direccion = "up";
                     break;
                 case 32:
-                    velocidad += 0
+                    pause = !pause;
                     break;
             }
         })
 
         function update(){
-            switch(direccion){
-                case "up":
-                    player.y -= velocidad
-                    if(player.y <= 0){
-                        player.y = 600
-                    }
-                break;
-                case "down":
-                    player.y += velocidad
-                    if(player.y >= 600){
-                        player.y = 0
-                    }
-                break;
-                case "left":
-                player.x -= velocidad
-                    if(player.x <= 0){
-                        player.x = 600
-                    }
-                break;
-                case "rigth":
-                    player.x += velocidad
-                    if(player.x >= 600){
-                        player.x = 0
-                    }
-                break;
+            if(!pause){
+                switch(direccion){
+                    case "up":
+                        player.y -= velocidad
+                        if(player.y <= 0){
+                            player.y = 600
+                        }
+                    break;
+                    case "down":
+                        player.y += velocidad
+                        if(player.y >= 600){
+                            player.y = 0
+                        }
+                    break;
+                    case "left":
+                    player.x -= velocidad
+                        if(player.x <= 0){
+                            player.x = 600
+                        }
+                    break;
+                    case "rigth":
+                        player.x += velocidad
+                        if(player.x >= 600){
+                            player.x = 0
+                        }
+                    break;
+
+            }
+                
 
                 
             }
         }
 
+        
 
 
         function pintar(){
             
-            ctx.fillStyle = "grey";
+            ctx.fillStyle = "#09B5BB";
             ctx.fillRect(0,0,600,600)
 
             update();
             player.tocar(rat);
+
+            if(pause){
+                ctx.fillStyle = "rgba(214,207,206,0.5)";
+                ctx.fillRect(0,0,600,600)
+                ctx.fillStyle = "black";
+                ctx.font = "40px georgia"
+                ctx.fillText("PAUSE", 170,300)
+
+            }
+            
 
             ctx.fillStyle = player.c
             ctx.fillRect(player.x,player.y,player.w,player.h)
@@ -181,7 +199,7 @@
             requestAnimationFrame(pintar)
             ctx.fillStyle = "black";
             ctx.font = "25px georgia"
-            ctx.fillText("SPEED: " + velocidad, 20,20)
+            ctx.fillText("POINTS: " + puntos, 20,20)
         }
         requestAnimationFrame(pintar)
 
