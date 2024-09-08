@@ -21,10 +21,16 @@
 </head>
 <body>
     <canvas id = "my_canvas" width="500" height="500"></canvas>
+    <img id="sebas" src="sebas.jpeg" alt="Image" style="display:none;">
     
     <script type = "text/javascript">
         const my_canvas = document.getElementById('my_canvas')
         const ctx = my_canvas.getContext('2d')
+        const image = document.getElementById("sebas")
+        
+        const audio = new Audio('aayy-ayy-5-.mp3');
+        audio.preload = "auto";
+        document.body.appendChild(audio); 
         
 
         function getRandomColor() {
@@ -64,7 +70,7 @@
                     otro.x = Math.random() * 500
                     otro.y = Math.random() * 500
                     puntos += 10 
-
+                    audio.play();
                 }
                 return true;
             }
@@ -177,12 +183,9 @@
                 ctx.fillText("PAUSE", 170,300)
 
             }
+
             
-
-            ctx.fillStyle = player.c
-            ctx.fillRect(player.x,player.y,player.w,player.h)
-            ctx.strokeRect(player.x,player.y,player.w,player.h)
-
+            ctx.drawImage(image, player.x, player.y, player.w, player.h);
 
             ctx.fillStyle = rat.c
             ctx.fillRect(rat.x,rat.y,rat.w,rat.h)
