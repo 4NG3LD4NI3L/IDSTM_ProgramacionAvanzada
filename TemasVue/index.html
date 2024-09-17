@@ -8,6 +8,7 @@
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+    <!--
     <div id="app">
         <h1>Mi nombre es: {{nombre}} </h1>
         <input type="text" v-model="nombre" placeholder="Nombre" >
@@ -27,6 +28,33 @@
         <p>La suma es: {{suma}}</p>
 
 
+    -->
+
+    <div id="app">
+        LOGIN Vue
+        <form @Submit.prevent="onsubmit">
+            <fieldset>
+                <label>Correo</label>
+                <input type="email" v-model="email" placeholder="Escribe tu correo" required name=""> 
+            </fieldset>
+            <fieldset>
+                <label>Contraseña</label>
+                <input type="password" v-model="contra" placeholder="Escribe tu contraseña" required name="" >
+            </fieldset>
+            <button type="submit">
+                Accceder
+            </button>
+        </form>
+
+        <div v-if="acceso">
+            <h2>Acceso concedido. Bienvenido!</h2>
+        </div>
+    
+        <div v-if="errorAcceso">
+            <h2>Error: Correo o contraseña incorrectos</h2>
+        </div>
+
+    </div>
     </div>    
 
 
@@ -36,6 +64,48 @@
         const { createApp, ref } = Vue
         
         createApp({
+            setup(){
+                let email=ref('')
+                let contra=ref('')
+                let acceso=ref(false)
+                let noAcceso=ref(false)
+                return{
+                    email,
+                    contra,
+                    acceso,
+                    noAcceso,
+                    onsubmit
+                }
+            },
+            methods: {
+                onsubmit() {
+                    console.log(this.email); 
+                    console.log(this.contra); 
+
+                    fetch('users.JSON')
+                    .then(res => res.json())
+                    .then(data => {
+                    
+                        const usuarioValido = data.find(user => user.email === this.email && user.contra === this.contra);
+                        
+                        if (usuarioValido) {
+                            this.acceso = true;      
+                            this.errorAcceso = false;
+                        } else {
+                            this.errorAcceso = true; 
+                            this.acceso = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.errorAcceso = true;
+                    }); 
+                }
+            }
+        }).mount('#app')
+
+
+        /*createApp({
             setup() {
                 const nombre = ref('')
                 const apellido = ref('')
@@ -69,7 +139,7 @@
                     this.user.push(tmp);
                 }
             }
-        }).mount('#app')
+        }).mount('#app')*/
     </script>
 
 
