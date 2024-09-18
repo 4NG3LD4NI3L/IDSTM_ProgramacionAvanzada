@@ -49,7 +49,7 @@
     
         <div v-if="acceso">
             <h2>Acceso concedido. Bienvenido {{ usuarioSesion.name }}!</h2>
-            <async-user-list />
+            <async-user-list/>
         </div>
     
         <div v-if="errorAcceso">
@@ -68,32 +68,94 @@
                     return {
                         template: `
                             <div>
-                            <h3>Lista de Usuarios:</h3>
-                            <table border="1">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Correo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="user in users" :key="user.id">
-                                        <td>{{ user.id }}</td>
-                                        <td>{{ user.name }}</td>
-                                        <td>{{ user.email }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                <h3>Lista de Usuarios:</h3>                               
+                                <button @click="toggleForm">
+                                    {{ showForm ? 'Ocultar Formulario' : 'Agregar Usuario' }}
+                                </button>
+                                <table border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>phone</th>
+                                            <th>website</th>
+                                            <th>accions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="user in users" :key="user.id">
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.name }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ user.phone }}</td>
+                                            <td>{{ user.website }}</td>
+                                            <td>
+                                                <button>Editar</button>
+                                                <button>Remove</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <form v-if="showForm" @submit.prevent="addUser">
+                                <fieldset>
+                                    <label>Nombre:</label>
+                                    <input v-model="newUser.name" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label>Correo:</label>
+                                    <input v-model="newUser.email" type="email" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label>Teléfono:</label>
+                                    <input v-model="newUser.phone" required>
+                                </fieldset>
+                                <fieldset>
+                                    <label>Sitio Web:</label>
+                                    <input v-model="newUser.website" required>
+                                </fieldset>
+                                <button type="submit">Guardar Usuario</button>
+                                </form>
+                            </div>
                         `,
                         data() {
                             return {
-                                users: data
+                                users: data,
+                                newUser: {
+                                    id: null,
+                                    name: '',
+                                    email: '',
+                                    phone: '',
+                                    website: ''
+                                },
+                                showForm: false
                             }
+                            
+                        },
+                        methods: {
+                            toggleForm() {
+                                this.showForm = !this.showForm; 
+                            },
+                            addUser() {
+                                if (this.newUser.name && this.newUser.email && this.newUser.phone && this.newUser.website) {
+                                    // Obtener el ID máximo actual
+                                    const maxId = this.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
+                                    
+                                    // Asignar un nuevo ID único
+                                    this.newUser.id = maxId + 1;
+                                    
+                                    // Agregar el nuevo usuario a la lista
+                                    this.users.push({ ...this.newUser }); // Crear una copia del nuevo usuario
+                                    
+                                    // Limpiar el formulario
+                                    this.newUser = { id: null, name: '', email: '', phone: '', website: '' };
+                                }
+                            } 
                         }
                     }
                 })
+
         });
     
         createApp({
@@ -137,15 +199,15 @@
                             console.error('Error:', error);
                             this.errorAcceso = true;
                         });
+                    }
+                },
+                mounted() {
+                    const usuarioGuardado = sessionStorage.getItem('usuarioSesion');
+                    if (usuarioGuardado) {
+                        this.usuarioSesion = JSON.parse(usuarioGuardado);
+                        this.acceso = true;
+                    }
                 }
-            },
-            mounted() {
-                const usuarioGuardado = sessionStorage.getItem('usuarioSesion');
-                if (usuarioGuardado) {
-                    this.usuarioSesion = JSON.parse(usuarioGuardado);
-                    this.acceso = true;
-                }
-            }
         }).mount('#app');
 
 
