@@ -32,20 +32,20 @@
 
     <div id="app">
         LOGIN Vue
-        <form @Submit.prevent="onsubmit">
+        <form @submit.prevent="onsubmit" v-if="!acceso">
             <fieldset>
                 <label>Correo</label>
                 <input type="email" v-model="email" placeholder="Escribe tu correo" required name=""> 
             </fieldset>
             <fieldset>
                 <label>Contraseña</label>
-                <input type="password" v-model="contra" placeholder="Escribe tu contraseña" required name="" >
+                <input type="password" v-model="password" placeholder="Escribe tu contraseña" required name="" >
             </fieldset>
             <button type="submit">
-                Accceder
+                Acceder
             </button>
         </form>
-
+    
         <div v-if="acceso">
             <h2>Acceso concedido. Bienvenido!</h2>
         </div>
@@ -53,53 +53,47 @@
         <div v-if="errorAcceso">
             <h2>Error: Correo o contraseña incorrectos</h2>
         </div>
-
     </div>
-    </div>    
-
-
-
     
     <script>
         const { createApp, ref } = Vue
-        
+    
         createApp({
-            setup(){
-                let email=ref('')
-                let contra=ref('')
-                let acceso=ref(false)
-                let noAcceso=ref(false)
-                return{
+            setup() {
+                let email = ref('')
+                let password = ref('')
+                let acceso = ref(false)
+                let errorAcceso = ref(false)
+    
+                return {
                     email,
-                    contra,
+                    password,
                     acceso,
-                    noAcceso,
-                    onsubmit
+                    errorAcceso
                 }
             },
             methods: {
                 onsubmit() {
-                    console.log(this.email); 
-                    console.log(this.contra); 
-
+                    console.log(this.email);
+                    console.log(this.password);
+    
                     fetch('users.JSON')
-                    .then(res => res.json())
-                    .then(data => {
-                    
-                        const usuarioValido = data.find(user => user.email === this.email && user.contra === this.contra);
-                        
-                        if (usuarioValido) {
-                            this.acceso = true;      
-                            this.errorAcceso = false;
-                        } else {
-                            this.errorAcceso = true; 
-                            this.acceso = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        this.errorAcceso = true;
-                    }); 
+                        .then(res => res.json())
+                        .then(data => {
+                            const usuarioValido = data.find(user => user.email === this.email && user.password === this.password);
+    
+                            if (usuarioValido) {
+                                this.acceso = true;
+                                this.errorAcceso = false;
+                            } else {
+                                this.errorAcceso = true;
+                                this.acceso = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            this.errorAcceso = true;
+                        });
                 }
             }
         }).mount('#app')
