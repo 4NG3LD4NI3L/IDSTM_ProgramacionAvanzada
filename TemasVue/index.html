@@ -31,7 +31,7 @@
     -->
 
     <div id="app">
-        LOGIN Vue
+        <h1>LOGIN Vue</h1>
         <form @submit.prevent="onsubmit" v-if="!acceso">
             <fieldset>
                 <label>Correo</label>
@@ -45,9 +45,11 @@
                 Acceder
             </button>
         </form>
+        
     
         <div v-if="acceso">
-            <h2>Acceso concedido. Bienvenido!</h2>
+            <h2>Acceso concedido. Bienvenido {{ usuarioSesion.name }}!</h2>
+            <async-user-list />
         </div>
     
         <div v-if="errorAcceso">
@@ -56,27 +58,52 @@
     </div>
     
     <script>
-        const { createApp, ref } = Vue
+        const { createApp, ref, defineAsyncComponent } = Vue;
+    
+        // Componente asíncrono para cargar la lista de usuarios
+        const asyncUserList = defineAsyncComponent(() => {
+            return fetch('users.JSON')
+                .then(res => res.json())
+                .then(data => {
+                    return {
+                        template: `
+                            <div>
+                                <h3>Lista de Usuarios:</h3>
+                                <ul>
+                                    <li v-for="user in users" :key="user.id">
+                                      Nombre: {{ user.name }} - Correo: {{ user.email }}
+                                    </li>
+                                </ul>
+                            </div>
+                        `,
+                        data() {
+                            return {
+                                users: data
+                            }
+                        }
+                    }
+                })
+        });
     
         createApp({
+            components: {asyncUserList},
             setup() {
-                let email = ref('')
-                let password = ref('')
-                let acceso = ref(false)
-                let errorAcceso = ref(false)
+                let email = ref('');
+                let password = ref('');
+                let acceso = ref(false);
+                let errorAcceso = ref(false);
+                let usuarioSesion = ref(null);
     
                 return {
                     email,
                     password,
                     acceso,
-                    errorAcceso
+                    errorAcceso,
+                    usuarioSesion
                 }
             },
             methods: {
                 onsubmit() {
-                    console.log(this.email);
-                    console.log(this.password);
-    
                     fetch('users.JSON')
                         .then(res => res.json())
                         .then(data => {
@@ -85,6 +112,11 @@
                             if (usuarioValido) {
                                 this.acceso = true;
                                 this.errorAcceso = false;
+    
+                                // Guardar usuario en la sesión
+                                sessionStorage.setItem('usuarioSesion', JSON.stringify(usuarioValido));
+                                this.usuarioSesion = usuarioValido;
+    
                             } else {
                                 this.errorAcceso = true;
                                 this.acceso = false;
@@ -95,8 +127,15 @@
                             this.errorAcceso = true;
                         });
                 }
+            },
+            mounted() {
+                const usuarioGuardado = sessionStorage.getItem('usuarioSesion');
+                if (usuarioGuardado) {
+                    this.usuarioSesion = JSON.parse(usuarioGuardado);
+                    this.acceso = true;
+                }
             }
-        }).mount('#app')
+        }).mount('#app');
 
 
         /*createApp({
