@@ -68,13 +68,24 @@
                     return {
                         template: `
                             <div>
-                                <h3>Lista de Usuarios:</h3>
-                                <ul>
-                                    <li v-for="user in users" :key="user.id">
-                                      Nombre: {{ user.name }} - Correo: {{ user.email }}
-                                    </li>
-                                </ul>
-                            </div>
+                            <h3>Lista de Usuarios:</h3>
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="user in users" :key="user.id">
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.email }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         `,
                         data() {
                             return {
