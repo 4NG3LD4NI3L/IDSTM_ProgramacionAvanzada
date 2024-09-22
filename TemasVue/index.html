@@ -72,7 +72,7 @@
                                 <button @click="toggleForm">
                                     {{ showForm ? 'Ocultar Formulario' : 'Agregar Usuario' }}
                                 </button>
-                                <table border="1">
+                                <table border="1" v-if="!showForm">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -91,14 +91,14 @@
                                             <td>{{ user.phone }}</td>
                                             <td>{{ user.website }}</td>
                                             <td>
-                                                <button>Editar</button>
-                                                <button>Remove</button>
+                                                <button @click="CargarUsuario(user)">Editar</button>
+                                                <button @click="borrarUsuario(user.id)">Remove</button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
 
-                                <form v-if="showForm" @submit.prevent="addUser">
+                                <form v-if="showForm" @submit.prevent="control">
                                 <fieldset>
                                     <label>Nombre:</label>
                                     <input v-model="newUser.name" required>
@@ -115,7 +115,9 @@
                                     <label>Sitio Web:</label>
                                     <input v-model="newUser.website" required>
                                 </fieldset>
-                                <button type="submit">Guardar Usuario</button>
+                                    <button type="submit">
+                                        {{ editarUsuario ? 'Actualizar Usuario' : 'Guardar Usuario' }}
+                                    </button>
                                 </form>
                             </div>
                         `,
@@ -129,29 +131,51 @@
                                     phone: '',
                                     website: ''
                                 },
-                                showForm: false
+                                showForm: false,
+                                editarUsuario:null
                             }
                             
                         },
                         methods: {
                             toggleForm() {
                                 this.showForm = !this.showForm; 
+                                this.Limpiar();
+                            },
+                            control(){
+                                if(this.editarUsuario){
+                                    this.editUser();
+                                } else{
+                                    this.addUser();
+                                }
                             },
                             addUser() {
                                 if (this.newUser.name && this.newUser.email && this.newUser.phone && this.newUser.website) {
-                                    // Obtener el ID máximo actual
                                     const maxId = this.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
-                                    
-                                    // Asignar un nuevo ID único
                                     this.newUser.id = maxId + 1;
-                                    
-                                    // Agregar el nuevo usuario a la lista
-                                    this.users.push({ ...this.newUser }); // Crear una copia del nuevo usuario
-                                    
-                                    // Limpiar el formulario
-                                    this.newUser = { id: null, name: '', email: '', phone: '', website: '' };
+                                    this.users.push({ ...this.newUser });
+                                    this.Limpiar();
                                 }
-                            } 
+                            },
+                            CargarUsuario(user){
+                                this.newUser = { ...user };
+                                this.showForm = true;
+                                this.editarUsuario = user;
+                            },
+                            editUser() {
+                                const index = this.users.findIndex(user => user.id === this.editarUsuario.id);
+                                if (index !== -1) {
+                                    this.users[index] = { ...this.newUser };
+                                    this.Limpiar();
+                                }
+                            },
+                            borrarUsuario (userId){
+                                this.users = this.users.filter(user => user.id !== userId);
+                    
+                            },
+                            Limpiar() {
+                            this.newUser = { id: null, name: '', email: '', phone: '', website: '' };
+                            this.editarUsuario = null;
+                    }
                         }
                     }
                 })
@@ -186,7 +210,6 @@
                                 this.acceso = true;
                                 this.errorAcceso = false;
     
-                                // Guardar usuario en la sesión
                                 sessionStorage.setItem('usuarioSesion', JSON.stringify(usuarioValido));
                                 this.usuarioSesion = usuarioValido;
     
