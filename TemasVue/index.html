@@ -3,53 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vue</title>
+    <title>LOGIN Vue</title>
 </head>
 <body>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <!--
     <div id="app">
-        <h1>Mi nombre es: {{nombre}} </h1>
-        <input type="text" v-model="nombre" placeholder="Nombre" >
-        <input type="text" v-model="apellido" placeholder="apellido" >
-        <button @click="agregar()">Guardar</button>
-        
-        <li v-for="item in user">
-            {{ item.nombre }} {{item.apellido}}
-        </li>
-        <br><br><br><br>
-        
-        <button @click="count++">Count is: {{ count }}</button>
-
-        <br><br><br><br>
-        <input @keyup="suma=num1+num2" type="number" v-model="num1" placeholder="Numero 1" >
-        <input @keyup="suma=num1+num2" type="number" v-model="num2" placeholder="Numero 2" >
-        <p>La suma es: {{suma}}</p>
-
-
-    -->
-
-    <div id="app">
-        <h1>LOGIN Vue</h1>
+        <h1>Cartelara</h1>
         <form @submit.prevent="onsubmit" v-if="!acceso">
             <fieldset>
-                <label>Correo</label>
-                <input type="email" v-model="email" placeholder="Escribe tu correo" required name=""> 
+                <label>Usuario</label>
+                <input type="username" v-model="username" placeholder="Escribe tu Usuario" required name=""> 
             </fieldset>
             <fieldset>
                 <label>Contraseña</label>
-                <input type="password" v-model="password" placeholder="Escribe tu contraseña" required name="" >
+                <input type="password" v-model="password" placeholder="Escribe tu contraseña" required name="">
             </fieldset>
             <button type="submit">
                 Acceder
             </button>
         </form>
-        
-    
+
         <div v-if="acceso">
             <h2>Acceso concedido. Bienvenido {{ usuarioSesion.name }}!</h2>
-            <async-user-list/>
+
+            <div v-if="peliculas.length > 0">
+                <h3>Películas en cartelera</h3>
+                <ul>
+                    <li v-for="pelicula in peliculas" :key="pelicula.id" class="pelicula" @click="obtenerDetallesPelicula(pelicula.id)">
+                        <img :src="'https://image.tmdb.org/t/p/w500' + pelicula.poster_path" :alt="pelicula.title" /><br />
+                        <strong>{{ pelicula.title }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div v-if="detalles" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="cerrarModal">&times;</span>
+                <h2>{{ detalles.title }}</h2>
+                <div class="modal-body">
+                    <img :src="'https://image.tmdb.org/t/p/w500' + detalles.poster_path" alt="Poster de la película" />
+                    <div class="movie-info">
+                        <p><strong>Descripción:</strong> {{ detalles.overview }}</p>
+                        <p><strong>Fecha de lanzamiento:</strong> {{ detalles.release_date }}</p>
+                        <p><strong>Calificación:</strong> {{ detalles.vote_average }}</p>
+
+                        <fieldset>
+                            <label for="rating">Califica esta película:</label>
+                            <select v-model="rating" id="rating">
+                                <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
+                            </select>
+                        </fieldset>
+
+                        <button @click="guardarCalificacion(detalles.id)" >Guardar Calificación</button>
+                        <button @click="eliminarCalificacion(detalles.id)"  >Eliminar Calificación</button>
+
+                    </div>
+                </div>
+            </div>
         </div>
     
         <div v-if="errorAcceso">
@@ -58,219 +70,266 @@
     </div>
     
     <script>
-        const { createApp, ref, defineAsyncComponent } = Vue;
-    
-        // Componente asíncrono para cargar la lista de usuarios
-        const asyncUserList = defineAsyncComponent(() => {
-            return fetch('users.JSON')
-                .then(res => res.json())
-                .then(data => {
-                    return {
-                        template: `
-                            <div>
-                                <h3>Lista de Usuarios:</h3>                               
-                                <button @click="toggleForm">
-                                    {{ showForm ? 'Ocultar Formulario' : 'Agregar Usuario' }}
-                                </button>
-                                <table border="1" v-if="!showForm">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Correo</th>
-                                            <th>phone</th>
-                                            <th>website</th>
-                                            <th>accions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="user in users" :key="user.id">
-                                            <td>{{ user.id }}</td>
-                                            <td>{{ user.name }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>{{ user.phone }}</td>
-                                            <td>{{ user.website }}</td>
-                                            <td>
-                                                <button @click="CargarUsuario(user)">Editar</button>
-                                                <button @click="borrarUsuario(user.id)">Remove</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <form v-if="showForm" @submit.prevent="control">
-                                <fieldset>
-                                    <label>Nombre:</label>
-                                    <input v-model="newUser.name" required>
-                                </fieldset>
-                                <fieldset>
-                                    <label>Correo:</label>
-                                    <input v-model="newUser.email" type="email" required>
-                                </fieldset>
-                                <fieldset>
-                                    <label>Teléfono:</label>
-                                    <input v-model="newUser.phone" required>
-                                </fieldset>
-                                <fieldset>
-                                    <label>Sitio Web:</label>
-                                    <input v-model="newUser.website" required>
-                                </fieldset>
-                                    <button type="submit">
-                                        {{ editarUsuario ? 'Actualizar Usuario' : 'Guardar Usuario' }}
-                                    </button>
-                                </form>
-                            </div>
-                        `,
-                        data() {
-                            return {
-                                users: data,
-                                newUser: {
-                                    id: null,
-                                    name: '',
-                                    email: '',
-                                    phone: '',
-                                    website: ''
-                                },
-                                showForm: false,
-                                editarUsuario:null
-                            }
-                            
-                        },
-                        methods: {
-                            toggleForm() {
-                                this.showForm = !this.showForm; 
-                                this.Limpiar();
-                            },
-                            control(){
-                                if(this.editarUsuario){
-                                    this.editUser();
-                                } else{
-                                    this.addUser();
-                                }
-                            },
-                            addUser() {
-                                if (this.newUser.name && this.newUser.email && this.newUser.phone && this.newUser.website) {
-                                    const maxId = this.users.reduce((max, user) => (user.id > max ? user.id : max), 0);
-                                    this.newUser.id = maxId + 1;
-                                    this.users.push({ ...this.newUser });
-                                    this.Limpiar();
-                                }
-                            },
-                            CargarUsuario(user){
-                                this.newUser = { ...user };
-                                this.showForm = true;
-                                this.editarUsuario = user;
-                            },
-                            editUser() {
-                                const index = this.users.findIndex(user => user.id === this.editarUsuario.id);
-                                if (index !== -1) {
-                                    this.users[index] = { ...this.newUser };
-                                    this.Limpiar();
-                                }
-                            },
-                            borrarUsuario (userId){
-                                this.users = this.users.filter(user => user.id !== userId);
-                    
-                            },
-                            Limpiar() {
-                            this.newUser = { id: null, name: '', email: '', phone: '', website: '' };
-                            this.editarUsuario = null;
-                    }
-                        }
-                    }
-                })
-
-        });
+        const { createApp, ref } = Vue;
     
         createApp({
-            components: {asyncUserList},
             setup() {
-                let email = ref('');
+                let username = ref('');
                 let password = ref('');
                 let acceso = ref(false);
                 let errorAcceso = ref(false);
                 let usuarioSesion = ref(null);
+                let peliculas = ref([]);
+                let detalles = ref(null);
+                let rating = ref(0);
+                let sessionId = ref(null);
     
                 return {
-                    email,
+                    username,
                     password,
                     acceso,
                     errorAcceso,
-                    usuarioSesion
-                }
+                    usuarioSesion,
+                    peliculas,
+                    detalles,
+                    rating,
+                    sessionId 
+                };
             },
             methods: {
                 onsubmit() {
-                    fetch('users.JSON')
-                        .then(res => res.json())
-                        .then(data => {
-                            const usuarioValido = data.find(user => user.email === this.email && user.password === this.password);
+                    fetch('https://api.themoviedb.org/3/authentication/token/new?api_key=5388513246d9a0e42c47c53cd8ce99df')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error al obtener el token');
+                            }
+                            return response.json();
+                        })
+                        .then(dataToken => {
+                            if (dataToken.success) {
+                                const token = dataToken.request_token;
     
-                            if (usuarioValido) {
+                                return fetch(`https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=5388513246d9a0e42c47c53cd8ce99df`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        username: this.username,
+                                        password: this.password,
+                                        request_token: token
+                                    })
+                                });
+                            } else {
+                                throw new Error('Error al obtener el token');
+                            }
+                        })
+                        .then(responseLogin => {
+                            if (!responseLogin.ok) {
+                                throw new Error('Error al validar el token');
+                            }
+                            return responseLogin.json();
+                        })
+                        .then(loginData => {
+                            if (loginData.success) {
+                                return fetch(`https://api.themoviedb.org/3/authentication/session/new?api_key=5388513246d9a0e42c47c53cd8ce99df`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ request_token: loginData.request_token })
+                                });
+                            } else {
+                                throw new Error('Error al validar el token');
+                            }
+                        })
+                        .then(responseSession => {
+                            if (!responseSession.ok) {
+                                throw new Error('Error al crear la sesión');
+                            }
+                            return responseSession.json();
+                        })
+                        .then(sessionData => {
+                            if (sessionData.success) {
                                 this.acceso = true;
                                 this.errorAcceso = false;
-    
-                                sessionStorage.setItem('usuarioSesion', JSON.stringify(usuarioValido));
-                                this.usuarioSesion = usuarioValido;
-    
+                                this.usuarioSesion = { name: this.username, session_id: sessionData.session_id }; // Guardar session_id
+                                sessionStorage.setItem('usuarioSesion', JSON.stringify(this.usuarioSesion));
+                                this.sessionId = sessionData.session_id; // Asignar sessionId
+                                return this.obtenerPeliculas();
                             } else {
-                                this.errorAcceso = true;
-                                this.acceso = false;
+                                throw new Error('Error al crear la sesión');
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             this.errorAcceso = true;
                         });
-                    }
                 },
-                mounted() {
-                    const usuarioGuardado = sessionStorage.getItem('usuarioSesion');
-                    if (usuarioGuardado) {
-                        this.usuarioSesion = JSON.parse(usuarioGuardado);
-                        this.acceso = true;
+                obtenerPeliculas() {
+                    fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=5388513246d9a0e42c47c53cd8ce99df")
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            this.peliculas = data.results;
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener las películas:', error);
+                        });
+                },
+                obtenerDetallesPelicula(peliculaId) {
+                    fetch(`https://api.themoviedb.org/3/movie/${peliculaId}?api_key=5388513246d9a0e42c47c53cd8ce99df`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Error al obtener los detalles de la película: ${response.status}`);
+                            }
+                            return response.json(); 
+                        })
+                        .then(detallesPelicula => {
+                            this.detalles = detallesPelicula;
+                            const userRating = sessionStorage.getItem(`rating_${peliculaId}`);
+                            
+                            if (userRating) {
+                                this.detalles.userRating = Number(userRating);
+                                this.rating = this.detalles.userRating;
+                            } else {
+                                this.detalles.userRating = null;
+                                this.rating = 0;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                },
+                guardarCalificacion(peliculaId) {
+                    if (!this.sessionId) {
+                        console.error('No hay sesión activa');
+                        return;
                     }
-                }
-        }).mount('#app');
-
-
-        /*createApp({
-            setup() {
-                const nombre = ref('')
-                const apellido = ref('')
-                const num1 = ref(0);
-                const num2 = ref(0);
-                const suma = ref(0);
-                const count = ref(0);
-                const user = ref([
-                   {
-                    "nombre":"test",
-                    "apellido":"test"
-                   }
-                ])
-        
-                return {
-                    nombre,
-                    apellido,
-                    count,
-                    num1,
-                    num2,
-                    suma,
-                    user
+    
+                    fetch(`https://api.themoviedb.org/3/movie/${peliculaId}/rating?api_key=5388513246d9a0e42c47c53cd8ce99df&session_id=${this.sessionId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ value: this.rating })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al guardar la calificación');
+                        }
+                        console.log(`Calificación guardada para la película ${peliculaId}: ${this.rating}`);
+                        this.detalles.userRating = this.rating;
+                        sessionStorage.setItem(`rating_${peliculaId}`, this.rating);
+                        this.cerrarModal();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                },
+                eliminarCalificacion(peliculaId) {
+                    if (!this.sessionId) {
+                        console.error('No hay sesión activa');
+                        return;
+                    }
+    
+                    fetch(`https://api.themoviedb.org/3/movie/${peliculaId}/rating?api_key=5388513246d9a0e42c47c53cd8ce99df&session_id=${this.sessionId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar la calificación');
+                        }
+                        console.log(`Calificación eliminada para la película ${peliculaId}`);
+                        this.detalles.userRating = null;
+                        sessionStorage.removeItem(`rating_${peliculaId}`);
+                        this.cerrarModal();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                },
+                cerrarModal() {
+                    this.detalles = null;
                 }
             },
-            methods:{
-                agregar(){
-                    let tmp = {
-                        "nombre":this.nombre,
-                        "apellido" :this.apellido
-                    }
-                    this.user.push(tmp);
+            mounted() {
+                const usuarioGuardado = sessionStorage.getItem('usuarioSesion');
+                if (usuarioGuardado) {
+                    this.usuarioSesion = JSON.parse(usuarioGuardado);
+                    this.acceso = true;  
+                    this.sessionId = this.usuarioSesion.session_id;
+                    this.obtenerPeliculas();
                 }
             }
-        }).mount('#app')*/
+        }).mount('#app');
     </script>
 
+    <style>
+        
+        .modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.7);
+        }
 
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            cursor: pointer;
+        }
+
+        .pelicula {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .pelicula img {
+            width: 200px;
+            height: auto;
+        }
+
+        .modal-body {
+            display: flex;
+            align-items: center; 
+        }
+
+        .modal-body img {
+            width: 150px; 
+            height: auto; 
+            margin: 15px; 
+        }
+
+        .movie-info {
+            display: flex;
+            flex-direction: column; 
+            justify-content: center; 
+            text-align: center; 
+        }
+
+    </style>
 </body>
 </html>
